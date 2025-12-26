@@ -2,6 +2,12 @@
 
 Async Python client for the [PyPI JSON API](https://docs.pypi.org/api/json/).
 
+## Installation
+
+```bash
+pip install git+https://github.com/harupy/pypi-json.git
+```
+
 ## Usage
 
 ```python
