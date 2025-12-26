@@ -74,6 +74,7 @@ pkg.get_files("2.31.0")      # Files for a specific version
 ```bash
 # Setup
 uv sync
+uv run pre-commit install
 
 # Run tests
 uv run pytest
