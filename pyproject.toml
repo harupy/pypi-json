@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pypi-json"
+version = "0.1.0"
+description = "Async-native Python client for the PyPI JSON API"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+authors = [{ name = "Your Name", email = "your@email.com" }]
+keywords = ["pypi", "api", "async", "aiohttp"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Framework :: AsyncIO",
+    "Typing :: Typed",
+]
+dependencies = ["aiohttp>=3.9.0", "packaging>=24.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0", "pytest-asyncio>=0.24.0", "aioresponses>=0.7.6", "ruff>=0.8.0", "ty>=0.0.1a7"]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/pypi-json"
+Repository = "https://github.com/yourusername/pypi-json"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pypi_json"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.ruff.format]
+quote-style = "double"
