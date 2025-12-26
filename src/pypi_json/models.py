@@ -166,7 +166,7 @@ class PackageMetadata:
     """Full package metadata including all releases."""
 
     info: PackageInfo
-    releases: dict[str, tuple[ReleaseFile, ...]]
+    releases: dict[Version, tuple[ReleaseFile, ...]]
     urls: tuple[ReleaseFile, ...]
     last_serial: int
     vulnerabilities: tuple[Vulnerability, ...]
@@ -174,7 +174,7 @@ class PackageMetadata:
     @property
     def versions(self) -> list[Version]:
         """Return all versions as sorted packaging.version.Version objects."""
-        return sorted(Version(v) for v in self.releases)
+        return sorted(self.releases)
 
     @property
     def latest_version(self) -> Version:
@@ -185,12 +185,14 @@ class PackageMetadata:
 
     def get_files(self, version: str | Version) -> tuple[ReleaseFile, ...]:
         """Get release files for a specific version."""
-        return self.releases.get(str(version), ())
+        if isinstance(version, str):
+            version = Version(version)
+        return self.releases.get(version, ())
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "PackageMetadata":
         releases = {
-            version: tuple(ReleaseFile.from_dict(f) for f in files)
+            Version(version): tuple(ReleaseFile.from_dict(f) for f in files)
             for version, files in data.get("releases", {}).items()
         }
         return cls(

@@ -73,7 +73,7 @@ pkg.get_files("2.31.0")      # Files for a specific version
 
 ```bash
 # Setup
-uv sync --all-extras
+uv sync
 
 # Run tests
 uv run pytest
