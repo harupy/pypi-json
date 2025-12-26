@@ -10,16 +10,16 @@ from packaging.version import Version
 class Digests:
     """File digest hashes."""
 
-    md5: str
-    sha256: str
-    blake2b_256: str
+    md5: str | None
+    sha256: str | None
+    blake2b_256: str | None
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Self:
         return cls(
-            md5=data.get("md5", ""),
-            sha256=data.get("sha256", ""),
-            blake2b_256=data.get("blake2b_256", ""),
+            md5=data.get("md5"),
+            sha256=data.get("sha256"),
+            blake2b_256=data.get("blake2b_256"),
         )
 
 

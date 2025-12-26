@@ -27,9 +27,9 @@ def test_digests_from_dict() -> None:
 def test_digests_from_dict_missing_fields() -> None:
     data: dict[str, str] = {}
     digests = Digests.from_dict(data)
-    assert digests.md5 == ""
-    assert digests.sha256 == ""
-    assert digests.blake2b_256 == ""
+    assert digests.md5 is None
+    assert digests.sha256 is None
+    assert digests.blake2b_256 is None
 
 
 def test_release_file_from_dict() -> None:
