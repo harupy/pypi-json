@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any
+from typing import Any, Self
 
 from packaging.specifiers import SpecifierSet
 from packaging.version import Version
@@ -15,7 +15,7 @@ class Digests:
     blake2b_256: str
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "Digests":
+    def from_dict(cls, data: dict[str, Any]) -> Self:
         return cls(
             md5=data.get("md5", ""),
             sha256=data.get("sha256", ""),
@@ -39,7 +39,7 @@ class ReleaseFile:
     yanked_reason: str | None
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "ReleaseFile":
+    def from_dict(cls, data: dict[str, Any]) -> Self:
         upload_time = datetime.fromisoformat(
             data["upload_time_iso_8601"].replace("Z", "+00:00")
         )
@@ -71,7 +71,7 @@ class Vulnerability:
     withdrawn: str | None
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "Vulnerability":
+    def from_dict(cls, data: dict[str, Any]) -> Self:
         return cls(
             id=data["id"],
             source=data["source"],
@@ -128,7 +128,7 @@ class PackageInfo:
         return None
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "PackageInfo":
+    def from_dict(cls, data: dict[str, Any]) -> Self:
         requires_dist = data.get("requires_dist")
         provides_extra = data.get("provides_extra")
         return cls(
@@ -190,7 +190,7 @@ class PackageMetadata:
         return self.releases.get(version, ())
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "PackageMetadata":
+    def from_dict(cls, data: dict[str, Any]) -> Self:
         releases = {
             Version(version): tuple(ReleaseFile.from_dict(f) for f in files)
             for version, files in data.get("releases", {}).items()
@@ -216,7 +216,7 @@ class ReleaseMetadata:
     vulnerabilities: tuple[Vulnerability, ...]
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "ReleaseMetadata":
+    def from_dict(cls, data: dict[str, Any]) -> Self:
         return cls(
             info=PackageInfo.from_dict(data["info"]),
             urls=tuple(ReleaseFile.from_dict(f) for f in data.get("urls", [])),
