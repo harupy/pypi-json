@@ -55,19 +55,22 @@ class PyPIJson:
         for attempt in range(self._max_retries):
             try:
                 async with self._session.get(url) as response:
-                    if response.status == 200:
-                        return await response.json()
-                    elif response.status == 404:
-                        raise PackageNotFoundError(url)
-                    elif response.status == 429:
-                        retry_after = response.headers.get("Retry-After")
-                        raise RateLimitError(int(retry_after) if retry_after else None)
-                    elif response.status >= 500:
-                        raise PyPIServerError(response.status)
-                    else:
-                        raise PyPIServerError(
-                            response.status, f"Unexpected status: {response.status}"
-                        )
+                    match response.status:
+                        case 200:
+                            return await response.json()
+                        case 404:
+                            raise PackageNotFoundError(url)
+                        case 429:
+                            retry_after = response.headers.get("Retry-After")
+                            raise RateLimitError(
+                                int(retry_after) if retry_after else None
+                            )
+                        case status if status >= 500:
+                            raise PyPIServerError(status)
+                        case status:
+                            raise PyPIServerError(
+                                status, f"Unexpected status: {status}"
+                            )
             except (aiohttp.ClientError, PyPIServerError, RateLimitError) as e:
                 last_exception = e
                 if isinstance(e, PackageNotFoundError):
